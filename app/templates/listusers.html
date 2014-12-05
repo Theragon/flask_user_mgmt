@@ -1,0 +1,14 @@
+<table style="width:100%">
+	<tr>
+		<th>username</th>
+		<th>email</th> 
+		<th>password</th>
+	</tr>
+	{% for user in users %}
+	<tr>
+		<td>{{ user.name }}</td>
+		<td>{{ user.email }}</td> 
+		<td>{{ user.pw_hash }}</td>
+	</tr>
+	{% endfor %}
+</table>

@@ -1,0 +1,13 @@
+<h1>Index</h1>
+<a href="signin">Sign in</a>
+<a href="signup">Sign up</a>
+<hr>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul>
+{% for message in messages %}
+    <li>{{ message }} </li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
