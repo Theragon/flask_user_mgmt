@@ -2,10 +2,6 @@
 from models import User
 import database as db
 
-'''@lm.user_loader
-def load_user(id):
-	user = User.query.get(int(id))
-	return user'''
 
 def get_user_by_id(id):
 	user = User.query.get(int(id))

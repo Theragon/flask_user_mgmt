@@ -9,7 +9,6 @@ class User(db.Model):
 	id = Column(Integer, primary_key=True)
 	name = Column(String(50), unique=True)
 	email = Column(String(120), unique=True)
-	password = Column(String(120), unique=False)
 	pw_hash = Column(String(120), unique=False)
 
 	def is_authenticated(self):
@@ -27,7 +26,6 @@ class User(db.Model):
 	def __init__(self, name=None, email=None, password=None):
 		self.name = name
 		self.email = email
-		self.password = password
 		self.set_password(password)
 
 	def set_password(self, password):
