@@ -15,8 +15,8 @@ from flask.ext.login import (login_required, login_user, logout_user,
 from flask import Blueprint
 
 from app import app, lm
-from models import User
-import database as db
+#from models import User
+import usercontroller as usrcntrlr
 
 login_api = Blueprint('login_api', __name__)
 
@@ -28,8 +28,7 @@ DELETE = 'DELETE'
 
 @lm.user_loader
 def load_user(id):
-	user = User.query.get(int(id))
-	return user
+	return usrcntrlr.get_user_by_id(id)
 
 
 @login_api.route("/secret")
@@ -50,10 +49,10 @@ def signin():
 			password = request.form["password"]
 			print('username: ' + username)
 			print('password: ' + password)
-			user = get_user_by_name(username)
+			user = usrcntrlr.get_user_by_name(username)
 			if user is None:
 				print('user is None')
-				user = get_user_by_email(username)
+				user = usrcntrlr.get_user_by_email(username)
 			if user is None:
 				message = 'Invalid username or email'
 			if username == user.name:
@@ -113,11 +112,11 @@ def signup():
 		success = False
 		message = ''
 
-		if not username_exists(username):
+		if not usrcntrlr.username_exists(username):
 			print(username + ' is available')
-			if not email_exists(email):
+			if not usrcntrlr.email_exists(email):
 				print(email + ' is not registered')
-				success = create_user(username, email, password)
+				success = usrcntrlr.create_user(username, email, password)
 				message = 'You have successfully signed up!'
 				print(username + ' signed up')
 				print('password: ' + password)
@@ -140,44 +139,5 @@ def signup():
 
 @login_api.route('/listusers')
 def listusers():
-	users = get_all_users()
+	users = usrcntrlr.get_all_users()
 	return render_template('listusers.html', users=users)
-
-
-def get_all_users():
-	users = User.query.all()
-	return users
-
-
-def get_user_by_name(username):
-	print('getting user ' + username + ' by username')
-	user = User.query.filter(User.name == username).first()
-	return user
-
-
-def get_user_by_email(email):
-	print('getting user ' + email + ' by email')
-	user = User.query.filter(User.email == email).first()
-	return user
-
-
-def username_exists(username):
-	user = get_user_by_name(username)
-	if user == None:
-		return False
-	else:
-		return True
-
-
-def email_exists(email):
-	user = get_user_by_email(email)
-	if user == None:
-		return False
-	else:
-		return True
-
-
-def create_user(username, email, password):
-	print('creating new user: ' + username + ' ' + email + ' ' + password)
-	user = User(username, email, password)
-	return db.save(user)
