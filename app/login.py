@@ -40,7 +40,7 @@ def secret():
 @login_api.route("/signin", methods=[GET, POST])
 def signin():
 	print('def signin')
-	if request.method == "POST":
+	if request.method == POST:
 		print('request is POST')
 		success = False
 		message = ''
@@ -58,25 +58,22 @@ def signin():
 			if username == user.name:
 				if user.check_password(password):
 					print('password: ' + password)
-					#remember = request.form.get("remember", "no") == "yes"
-					#if login_user(USER_NAMES[username], remember=remember):
-					login_user(user)
-					message = 'Logged in!'
-					success = True
-					flash("Logged in!")
-					return redirect(request.args.get("next") or url_for("index"))
+					remember = request.form.get("remember")
+					if login_user(user, remember=remember):
+						print('remember: ' + str(remember))
+						#print(dir(request))
+						message = 'Logged in!'
+						success = True
 				else:
 					message = 'Did you type your username and password correctly ?'
 			else:
-				message = 'Sorry, but you could not log in'
+				message = 'Did you type your username and password correctly ?'
 		else:
 			message = 'Ivalid username or email'
-			flash(u"Invalid username.")
+		flash(message)
 		if success:
-			flash(message)
 			return redirect(request.args.get('next') or url_for('index'))
 		if not success:
-			flash(message)
 			return render_template('signin.html')
 	else:
 		return render_template("signin.html")
