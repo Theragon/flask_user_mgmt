@@ -14,7 +14,7 @@ from flask.ext.login import (login_required, login_user, logout_user,
 
 from flask import Blueprint
 
-from app import app, lm
+from app import lm
 import usercontroller as usr
 
 login_api = Blueprint('login_api', __name__)
