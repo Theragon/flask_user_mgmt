@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from werkzeug.security import generate_password_hash, check_password_hash
-#from werkzeug.security import check_password_hash
 from sqlalchemy import Column, Integer, String
 from app import db
 

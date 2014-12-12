@@ -1,4 +1,3 @@
-#from app import lm
 from models import User
 import database as db
 

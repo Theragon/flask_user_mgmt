@@ -15,8 +15,7 @@ from flask.ext.login import (login_required, login_user, logout_user,
 from flask import Blueprint
 
 from app import app, lm
-#from models import User
-import usercontroller as usrcntrlr
+import usercontroller as usr
 
 login_api = Blueprint('login_api', __name__)
 
@@ -28,7 +27,7 @@ DELETE = 'DELETE'
 
 @lm.user_loader
 def load_user(id):
-	return usrcntrlr.get_user_by_id(id)
+	return usr.get_user_by_id(id)
 
 
 @login_api.route("/secret")
@@ -49,10 +48,10 @@ def signin():
 			password = request.form["password"]
 			print('username: ' + username)
 			print('password: ' + password)
-			user = usrcntrlr.get_user_by_name(username)
+			user = usr.get_user_by_name(username)
 			if user is None:
 				print('user is None')
-				user = usrcntrlr.get_user_by_email(username)
+				user = usr.get_user_by_email(username)
 			if user is None:
 				message = 'Invalid username or email'
 			if username == user.name:
@@ -109,11 +108,11 @@ def signup():
 		success = False
 		message = ''
 
-		if not usrcntrlr.username_exists(username):
+		if not usr.username_exists(username):
 			print(username + ' is available')
-			if not usrcntrlr.email_exists(email):
+			if not usr.email_exists(email):
 				print(email + ' is not registered')
-				success = usrcntrlr.create_user(username, email, password)
+				success = usr.create_user(username, email, password)
 				message = 'You have successfully signed up!'
 				print(username + ' signed up')
 				print('password: ' + password)
@@ -136,5 +135,5 @@ def signup():
 
 @login_api.route('/listusers')
 def listusers():
-	users = usrcntrlr.get_all_users()
+	users = usr.get_all_users()
 	return render_template('listusers.html', users=users)
