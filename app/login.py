@@ -8,7 +8,7 @@ Flask-Login, including remember me functionality.
 :copyright: (C) 2011 by Matthew Frazier.
 :license:   MIT/X11, see LICENSE for more details.
 """
-from flask import Flask, request, render_template, redirect, url_for, flash
+from flask import request, render_template, redirect, url_for, flash
 from flask.ext.login import (login_required, login_user, logout_user,
 							confirm_login, fresh_login_required, current_user)
 
@@ -38,9 +38,7 @@ def secret():
 
 @login_api.route("/signin", methods=[GET, POST])
 def signin():
-	print('def signin')
 	if request.method == POST:
-		print('request is POST')
 		success = False
 		message = ''
 		if "username" in request.form:
@@ -50,7 +48,6 @@ def signin():
 			print('password: ' + password)
 			user = usr.get_user_by_name(username)
 			if user is None:
-				print('user is None')
 				user = usr.get_user_by_email(username)
 			if user is None:
 				message = 'Invalid username or email'
@@ -60,7 +57,6 @@ def signin():
 					remember = request.form.get("remember")
 					if login_user(user, remember=remember):
 						print('remember: ' + str(remember))
-						#print(dir(request))
 						message = 'Logged in!'
 						success = True
 				else:

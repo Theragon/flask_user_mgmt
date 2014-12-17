@@ -11,3 +11,13 @@ def save(changes):
 		print('could not save changes')
 		db.session.rollback()
 		return False
+
+def delete(changes):
+	try:
+		db.session.delete(changes)
+		db.session.commit()
+		return True
+	except:
+		print('could not delete changes')
+		db.session.rollback()
+		return False

@@ -1,0 +1,44 @@
+
+tengitafla
+_________________
+|user id|role id|
+|		|		|
+|		|		|
+
+
+roles
+_________________________
+| id|  name	|description|
+|---|-------|-----------|
+| 0	| admin	| administ..|
+| 1	| user	| regular	|
+|	|		|			|
+
+user
+_________________________________
+|id	| name	| email	| password	|
+|---|-------|-------|-----------|
+|	|		|		|			|
+
+
+class Game(db.Model):
+	__tablename__ = 'games'
+	id = Column(Integer, primary_key = True)
+	date = 
+	team1 = []
+	team2 = []
+	goals = []
+
+
+class Goal(db.Model):
+	__tablename__ = 'goals'
+	id = Column(Integer, primary_key = True)
+	assist = 
+	player = 
+
+
+class Assist(db.Model):
+	__tablename__ = 'assists'
+	id = Column(Integer, primary_key = True)
+	player = 
+	receiver = 
