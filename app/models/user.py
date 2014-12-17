@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 from werkzeug.security import generate_password_hash, check_password_hash
-import roles_users
 from app import db
+#import roles_users
+from user_roles import roles_users
+from datetime import datetime
 
 class User(db.Model):
 	__tablename__ = 'users'
@@ -9,6 +11,7 @@ class User(db.Model):
 	name = db.Column(db.String(50), unique=True)
 	email = db.Column(db.String(120), unique=True)
 	password = db.Column(db.String(120), unique=False)
+	last_seen = db.Column(db.DateTime)
 	created = db.Column(db.DateTime)
 	active = db.Column(db.Boolean)
 	roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
@@ -29,6 +32,10 @@ class User(db.Model):
 		self.name = name
 		self.email = email
 		self.set_password(password)
+		self.created = datetime.utcnow()
+
+	def update_last_seen(self):
+		self.last_seen = datetime.utcnow()
 
 	def set_password(self, password):
 		self.password = generate_password_hash(password)
