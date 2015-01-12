@@ -55,10 +55,13 @@ def signin():
 				if user.check_password(password):
 					print('password: ' + password)
 					remember = request.form.get("remember")
-					if login_user(user, remember=remember):
+					success = login_user(user, remember=remember)
+					if success:
 						print('remember: ' + str(remember))
 						message = 'Logged in!'
-						success = True
+						#success = True
+					if not success:
+						print('login_user returned: ' + str(success))
 				else:
 					message = 'Did you type your username and password correctly ?'
 			else:

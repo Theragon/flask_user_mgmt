@@ -2,7 +2,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
 #import roles_users
-from user_roles import roles_users
+#from user_roles import roles_users
 from datetime import datetime
 
 class User(db.Model):
@@ -14,7 +14,7 @@ class User(db.Model):
 	last_seen = db.Column(db.DateTime)
 	created = db.Column(db.DateTime)
 	active = db.Column(db.Boolean)
-	roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
+	#roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
 
 	def is_authenticated(self):
 		return True
@@ -33,6 +33,8 @@ class User(db.Model):
 		self.email = email
 		self.set_password(password)
 		self.created = datetime.utcnow()
+		self.last_seen = self.createdl
+		self.active = True
 
 	def update_last_seen(self):
 		self.last_seen = datetime.utcnow()

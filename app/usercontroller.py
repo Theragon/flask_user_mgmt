@@ -16,6 +16,14 @@ def get_user_by_email(email):
 	user = User.query.filter(User.email == email).first()
 	return user
 
+def get_user_by_name_or_email(name):
+	user = User.query.filter(User.name == name).first()
+	
+	if user is None:
+		user = User.query.filter(User.email == name).first()
+
+	return user
+
 def username_exists(username):
 	user = get_user_by_name(username)
 	if user == None:
