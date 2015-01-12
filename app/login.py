@@ -4,9 +4,6 @@ Flask-Login example
 ===================
 This is a small application that provides a trivial demonstration of
 Flask-Login, including remember me functionality.
-
-:copyright: (C) 2011 by Matthew Frazier.
-:license:   MIT/X11, see LICENSE for more details.
 """
 from flask import request, render_template, redirect, url_for, flash
 from flask.ext.login import (login_required, login_user, logout_user,
@@ -46,24 +43,22 @@ def signin():
 			password = request.form["password"]
 			print('username: ' + username)
 			print('password: ' + password)
-			user = usr.get_user_by_name(username)
-			if user is None:
-				user = usr.get_user_by_email(username)
+			#user = usr.get_user_by_name(username)
+			user = usr.get_user_by_name_or_email(username)
 			if user is None:
 				message = 'Invalid username or email'
-			if username == user.name:
-				if user.check_password(password):
+			if user is not None:
+				if user.validate(username, password):
 					print('password: ' + password)
 					remember = request.form.get("remember")
 					success = login_user(user, remember=remember)
 					if success:
 						print('remember: ' + str(remember))
 						message = 'Logged in!'
-						#success = True
 					if not success:
 						print('login_user returned: ' + str(success))
 				else:
-					message = 'Did you type your username and password correctly ?'
+					message = 'Failed to validate user'
 			else:
 				message = 'Did you type your username and password correctly ?'
 		else:

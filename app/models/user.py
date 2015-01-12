@@ -45,5 +45,20 @@ class User(db.Model):
 	def check_password(self, password):
 		return check_password_hash(self.password, password)
 
+	def check_username(self, username):
+		if self.name == username:
+			return True
+		else:
+			return False
+
+	def validate(self, username, password):
+		if self.check_username(username):
+			print('usernames match')
+			if self.check_password(password):
+				print('passwords match')
+				return True
+
+		return False
+
 	def __repr__(self):
 		return '<User %r>' % (self.name)
