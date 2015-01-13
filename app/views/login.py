@@ -38,14 +38,14 @@ def signin():
 	if request.method == POST:
 		success = False
 		message = ''
-		if "username" in request.form:
+		if "username" in request.form and "password" in request.form:
 			username = request.form["username"]
 			password = request.form["password"]
 			print('username: ' + username)
 			print('password: ' + password)
 			user = usr.get_user_by_name_or_email(username)
-			if user is None:
-				message = 'Invalid username or email'
+			#if user is None:
+				#message = 'Invalid username or email'
 			if user is not None:
 				if user.validate(username, password):
 					print('password: ' + password)
@@ -61,7 +61,7 @@ def signin():
 			else:
 				message = 'Did you type your username and password correctly ?'
 		else:
-			message = 'Ivalid username or email'
+			message = 'Invalid username or email'
 		flash(message)
 		if success:
 			return redirect(request.args.get('next') or url_for('home_api.index'))
