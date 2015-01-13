@@ -33,7 +33,7 @@ class User(db.Model):
 		self.email = email
 		self.set_password(password)
 		self.created = datetime.utcnow()
-		self.last_seen = self.createdl
+		self.last_seen = self.created
 		self.active = True
 
 	def update_last_seen(self):
@@ -46,19 +46,10 @@ class User(db.Model):
 		return check_password_hash(self.password, password)
 
 	def check_username(self, username):
-		if self.name == username:
-			return True
-		else:
-			return False
+		return self.name == username
 
 	def validate(self, username, password):
-		if self.check_username(username):
-			print('usernames match')
-			if self.check_password(password):
-				print('passwords match')
-				return True
-
-		return False
+		return self.check_username(username) and self.check_password(password)
 
 	def __repr__(self):
 		return '<User %r>' % (self.name)

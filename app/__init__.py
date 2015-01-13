@@ -19,4 +19,5 @@ lm.login_view = "login"
 lm.login_message = u"Please log in to access this page."
 lm.refresh_view = "reauth"
 
-from app import main, models
+from app import models
+from views import main

@@ -1,14 +1,14 @@
-from models import User
-import database as db
+from ..models import User
+from app import database as db
 
 
 def get_user_by_id(id):
 	user = User.query.get(int(id))
 	return user
 
-def get_user_by_name(username):
-	print('getting user ' + username + ' by username')
-	user = User.query.filter(User.name == username).first()
+def get_user_by_name(name):
+	print('getting user ' + name + ' by username')
+	user = User.query.filter(User.name == name).first()
 	return user
 
 def get_user_by_email(email):
@@ -16,12 +16,11 @@ def get_user_by_email(email):
 	user = User.query.filter(User.email == email).first()
 	return user
 
-def get_user_by_name_or_email(name):
-	user = User.query.filter(User.name == name).first()
-	
+def get_user_by_name_or_email(name_or_email):
+	if name_or_email != None:
+		user = get_user_by_name(name_or_email)
 	if user is None:
-		user = User.query.filter(User.email == name).first()
-
+		user = get_user_by_email(name_or_email)
 	return user
 
 def username_exists(username):

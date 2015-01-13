@@ -12,7 +12,8 @@ from flask.ext.login import (login_required, login_user, logout_user,
 from flask import Blueprint
 
 from app import lm
-import usercontroller as usr
+#from .. import usercontroller as usr
+from ..controllers import usercontroller as usr
 
 login_api = Blueprint('login_api', __name__)
 
@@ -43,7 +44,6 @@ def signin():
 			password = request.form["password"]
 			print('username: ' + username)
 			print('password: ' + password)
-			#user = usr.get_user_by_name(username)
 			user = usr.get_user_by_name_or_email(username)
 			if user is None:
 				message = 'Invalid username or email'
@@ -65,7 +65,7 @@ def signin():
 			message = 'Ivalid username or email'
 		flash(message)
 		if success:
-			return redirect(request.args.get('next') or url_for('index'))
+			return redirect(request.args.get('next') or url_for('home_api.index'))
 		if not success:
 			return render_template('signin.html')
 	else:
