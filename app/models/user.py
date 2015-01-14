@@ -43,13 +43,22 @@ class User(db.Model):
 		self.password = generate_password_hash(password)
 
 	def check_password(self, password):
-		return check_password_hash(self.password, password)
+		if password == None:
+			return False
+		else:
+			return check_password_hash(self.password, password)
 
 	def check_username(self, username):
-		return self.name == username
+		if username == None:
+			return False
+		else:
+			return self.name == username
 
 	def validate(self, username, password):
-		return self.check_username(username) and self.check_password(password)
+		if username == None or password == None:
+			return False
+		else:
+			return self.check_username(username) and self.check_password(password)
 
 	def __repr__(self):
 		return '<User %r>' % (self.name)
