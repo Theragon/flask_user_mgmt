@@ -12,14 +12,11 @@ from flask.ext.login import (login_required, login_user, logout_user,
 from flask import Blueprint
 
 from app import lm
+from app.utils import *
+from app.constants import *
 from app.controllers import usercontroller as usr
 
 login_api = Blueprint('login_api', __name__)
-
-POST = 'POST'
-GET = 'GET'
-PUT = 'PUT'
-DELETE = 'DELETE'
 
 
 @lm.user_loader
@@ -38,30 +35,27 @@ def signin():
 	if request.method == POST:
 		success = False
 		message = ''
-		if "username" in request.form and "password" in request.form:
-			username = request.form["username"]
-			password = request.form["password"]
-			print('username: ' + username)
-			print('password: ' + password)
-			user = usr.get_user_by_name_or_email(username)
-			#if user is None:
-				#message = 'Invalid username or email'
-			if user is not None:
-				if user.validate(username, password):
-					print('password: ' + password)
-					remember = request.form.get("remember")
-					success = login_user(user, remember=remember)
-					if success:
-						print('remember: ' + str(remember))
-						message = 'Logged in!'
-					if not success:
-						print('login_user returned: ' + str(success))
-				else:
-					message = 'Failed to validate user'
+		#if "username" in request.form and "password" in request.form:
+		username, password = get_from_request_form(USERNAME, PASSWORD)
+		print('username: ' + str(username))
+		print('password: ' + str(password))
+		user = usr.get_user_by_name_or_email(username)
+		if user is not None:
+			if user.validate(username, password):
+				print('password: ' + password)
+				remember = request.form.get("remember")
+				success = login_user(user, remember=remember)
+				if success:
+					print('remember: ' + str(remember))
+					message = 'Logged in!'
+				if not success:
+					print('login_user returned: ' + str(success))
 			else:
-				message = 'Did you type your username and password correctly ?'
+				message = 'Failed to validate user'
 		else:
-			message = 'Invalid username or email'
+			message = 'Did you type your username and password correctly ?'
+		#else:
+			#message = 'Invalid username or email'
 		flash(message)
 		if success:
 			return redirect(request.args.get('next') or url_for('home_api.index'))
