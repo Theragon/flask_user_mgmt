@@ -15,6 +15,7 @@ from app import lm
 from app.utils import *
 from app.constants import *
 from app.controllers import usercontroller as usr
+from app import user_datastore, security
 
 login_api = Blueprint('login_api', __name__)
 
@@ -68,7 +69,7 @@ def signin():
 @login_api.route("/reauth", methods=[GET, POST])
 @login_required
 def reauth():
-	if request.method == "POST":
+	if request.method == POST:
 		confirm_login()
 		flash(u"Reauthenticated.")
 		return redirect(request.args.get("next") or url_for("index"))

@@ -1,4 +1,5 @@
 from app import db
+#from user import User
 #from flask.ext.security import RoleMixin
 
 class Role(db.Model):

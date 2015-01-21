@@ -1,5 +1,6 @@
 from app import db
-#from sqlalchemy import Column, Integer, ForeignKey
+#from user import User
+from role import Role
 
 roles_users = db.Table('roles_users', 
 	db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
